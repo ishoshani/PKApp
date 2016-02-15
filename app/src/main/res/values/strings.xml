@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">parkour</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main_map">Map</string>
+    <string name="Tag">Tag</string>
+    <string name="Add">Add</string>
+    <string name="who">Who</string>
+    <string name="what">What</string>
+    <string name="comments">Comments</string>
+    <string name="search">Search</string>
+</resources>
