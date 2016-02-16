@@ -67,14 +67,13 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                 Log.i("myLogs", search.getQuery().toString());
                 if (search.getQuery().toString() == "") {
                     LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    if (checkSelfPermission(permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        requestPermissions(new String[]{permission.ACCESS_FINE_LOCATION}, 0);
+                    if(getApplicationContext().checkCallingPermission(permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+                        Location location = lm.getLastKnownLocation(lm.GPS_PROVIDER);
+                        LatLng myLL = new LatLng(location.getLatitude(), location.getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLL));
+                        mMap.setMyLocationEnabled(true);
+                        mMap.moveCamera(CameraUpdateFactory.zoomTo(4));
                     }
-                    Location location = lm.getLastKnownLocation(lm.GPS_PROVIDER);
-                    LatLng myLL = new LatLng(location.getLatitude(), location.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLL));
-                    mMap.setMyLocationEnabled(true);
-                    mMap.moveCamera(CameraUpdateFactory.zoomTo(4));
                 }
 
 
@@ -137,7 +136,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                     .position(currentSpot)
                     .title(name));
         }
-        if (checkSelfPermission(permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
+        if (getApplicationContext().checkCallingPermission(permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
             LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             Location location = lm.getLastKnownLocation(lm.GPS_PROVIDER);
             if (location!=null) {
