@@ -89,7 +89,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
             }
         });
         TagButton = (Button)findViewById(R.id.TagButton);
-        AddButton = (Button)findViewById(R.id.TagButton);
+        AddButton = (Button)findViewById(R.id.AddButton);
         TagButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +107,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         AddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("myTags","Add Button has been pressed, current spot is at"+ToAdd.toString());
                 if(ToAdd==null){
                     Snackbar.make(CoordinatorLayoutView, "You need to select a place on the map first", Snackbar.LENGTH_LONG)
                             .show();
@@ -180,9 +181,10 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                Log.i("myLogs","registered a map click at "+latLng.toString());
                 mMap.addMarker(new MarkerOptions()
-                        .icon(BitmapDescriptorFactory.fromResource(android.R.drawable.btn_plus))
-                        .position(latLng));
+                        .position(latLng)
+                        .title("newSpot"));
                 ToAdd=latLng;
             }
         });
