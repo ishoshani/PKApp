@@ -1,13 +1,17 @@
 package com.example.isho.parkour;
 
+import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.nfc.Tag;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +41,8 @@ import java.util.jar.Manifest;
 public class MainMap extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    View CoordinatorLayoutView;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -45,6 +51,8 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     public SearchView search;
     public Button TagButton;
     public Button AddButton;
+    public Marker Tagged;
+    public LatLng ToAdd;
     private GoogleApiClient client;
 
     @Override
@@ -59,6 +67,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        CoordinatorLayoutView=findViewById(R.id.snackbarPosition);
 
         search = (SearchView)findViewById(R.id.mapSearch);
         search.setOnSearchClickListener(new View.OnClickListener() {
@@ -79,10 +88,44 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
 
             }
         });
+        TagButton = (Button)findViewById(R.id.TagButton);
+        AddButton = (Button)findViewById(R.id.TagButton);
+        TagButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if(Tagged==null) {
+                   Snackbar.make(CoordinatorLayoutView, "You need to select a spot first", Snackbar.LENGTH_LONG)
+                   .show();
+               }else{
+                       Snackbar.make(CoordinatorLayoutView,"Thank you for Sharing!",Snackbar.LENGTH_LONG)
+                       .show();
+                   }
+
+            }
+
+        });
+        AddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(ToAdd==null){
+                    Snackbar.make(CoordinatorLayoutView, "You need to select a place on the map first", Snackbar.LENGTH_LONG)
+                            .show();
+                }
+                else{
+                    Snackbar.make(CoordinatorLayoutView, "Thank you for adding this spot!", Snackbar.LENGTH_LONG)
+                            .show();
+                }
+            }
+        });
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode,resultCode,intent);
     }
 
 
@@ -126,6 +169,21 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                 startActivity(goToDetails);
             }
 
+        });
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                Tagged = marker;
+                return false;
+            }
+        });
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                mMap.addMarker(new MarkerOptions()
+                        .icon(BitmapDescriptorFactory.fromResource(android.R.drawable.btn_plus)));
+                ToAdd=latLng;
+            }
         });
 
         for(PKspot pk : pKspots) {

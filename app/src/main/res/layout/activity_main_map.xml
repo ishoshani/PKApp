@@ -15,6 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/SearchBar"
         android:layout_alignParentTop="true">
         <SearchView
             android:id="@+id/mapSearch"
@@ -28,6 +29,7 @@
             />
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/ButtonBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
     <Button
@@ -57,5 +59,12 @@
 
         />
         </RelativeLayout>
-
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/snackbarPosition">
+    </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>
+

@@ -7,4 +7,5 @@
     <color name="button_red">#b0281c</color>
     <color name="button_red2">#841e15</color>
     <color name="redbg_text">#D8E6F1</color>
+    <color name="notifyColor">#4d0900</color>
 </resources>
