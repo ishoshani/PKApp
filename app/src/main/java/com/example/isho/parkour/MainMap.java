@@ -181,7 +181,8 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onMapClick(LatLng latLng) {
                 mMap.addMarker(new MarkerOptions()
-                        .icon(BitmapDescriptorFactory.fromResource(android.R.drawable.btn_plus)));
+                        .icon(BitmapDescriptorFactory.fromResource(android.R.drawable.btn_plus))
+                        .position(latLng));
                 ToAdd=latLng;
             }
         });
