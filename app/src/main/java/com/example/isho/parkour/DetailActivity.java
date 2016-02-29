@@ -1,8 +1,10 @@
 package com.example.isho.parkour;
 
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -15,29 +17,54 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-public class DetailActivity extends FragmentActivity implements OnMapReadyCallback {
+
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import java.net.URI;
+
+
+public class DetailActivity extends AppCompatActivity implements OnMapReadyCallback, PageFragment.OnFragmentInteractionListener {
     String title;
     int stars;
     GoogleMap mMap;
-    DetailFragment Details;
+
     LatLng place;
     TextView viewTitle;
     TextView starCount;
     ImageButton UserLike;
 
+
+    PageFragment.OnFragmentInteractionListener mListener;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), DetailActivity.this));
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+
         title=getIntent().getStringExtra("title");
         stars=getIntent().getIntExtra("stars", 0);
         place=new LatLng(getIntent().getDoubleExtra("lat",0.0),getIntent().getDoubleExtra("long",0.0));
 
-        setContentView(R.layout.activity_detail);
+
+       /*
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detailmap);
         mapFragment.getMapAsync(this);
 
-        Details=(DetailFragment)getSupportFragmentManager().findFragmentById(R.id.detail);
+        Details=(DetailFragment1)getSupportFragmentManager().findFragmentById(R.id.detail);
         Details.setSpot(title);
         viewTitle= (TextView)findViewById(R.id.PlaceTitle);
         starCount=(TextView)findViewById(R.id.StarsCount);
@@ -56,8 +83,27 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
                 button.setClickable(false);
             }
         });
-
+*/
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
     @Override
     public void onMapReady(GoogleMap googleMap){
         mMap=googleMap;
@@ -69,5 +115,10 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_beenhere_black_18dp))
         );
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place,(float)19.35));
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
