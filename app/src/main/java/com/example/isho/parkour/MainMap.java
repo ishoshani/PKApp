@@ -74,22 +74,10 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 Log.i("myLogs", search.getQuery().toString());
-                if (search.getQuery().toString() == "") {
-                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                    if(getApplicationContext().checkCallingPermission(permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
-                        Location location = lm.getLastKnownLocation(lm.GPS_PROVIDER);
-                        LatLng myLL = new LatLng(location.getLatitude(), location.getLongitude());
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(myLL));
-                        mMap.setMyLocationEnabled(true);
-                        mMap.moveCamera(CameraUpdateFactory.zoomTo(4));
                     }
-                }
-
-
-            }
         });
         TagButton = (Button)findViewById(R.id.TagButton);
-        AddButton = (Button)findViewById(R.id.TagButton);
+        AddButton = (Button)findViewById(R.id.AddButton);
         TagButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,6 +95,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         AddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("myTags","Add Button has been pressed, current spot is at"+ToAdd.toString());
                 if(ToAdd==null){
                     Snackbar.make(CoordinatorLayoutView, "You need to select a place on the map first", Snackbar.LENGTH_LONG)
                             .show();
@@ -141,10 +130,8 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        double density=getApplicationContext().getResources().getDisplayMetrics().density;
-        int topdp=50;
-        int botdp=90;
-        mMap.setPadding(0,(int)(topdp*density),0,(int)(botdp*density));
+             Log.i("myLogs","Got Permissions! Attempting to enable my location");
+            mMap.setMyLocationEnabled(true);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -180,9 +167,10 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+                Log.i("myLogs","registered a map click at "+latLng.toString());
                 mMap.addMarker(new MarkerOptions()
-                        .icon(BitmapDescriptorFactory.fromResource(android.R.drawable.btn_plus))
-                        .position(latLng));
+                        .position(latLng)
+                        .title("newSpot"));
                 ToAdd=latLng;
             }
         });
@@ -195,17 +183,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                     .position(currentSpot)
                     .title(name));
         }
-        if (getApplicationContext().checkCallingPermission(permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED) {
-            LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            Location location = lm.getLastKnownLocation(lm.GPS_PROVIDER);
-            if (location!=null) {
-                LatLng myLL = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLL));
-            }
-            else{
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.512918, -122.679250),(float)15.3));
-            }
-        }
+
     }
 
 
