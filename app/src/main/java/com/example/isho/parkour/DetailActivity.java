@@ -58,25 +58,22 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         stars=getIntent().getIntExtra("stars", 0);
         place=new LatLng(getIntent().getDoubleExtra("lat",0.0),getIntent().getDoubleExtra("long",0.0));
 
-
-       /*
+/*
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detailmap);
         mapFragment.getMapAsync(this);
-
-        Details=(DetailFragment1)getSupportFragmentManager().findFragmentById(R.id.detail);
-        Details.setSpot(title);
+*//*
         viewTitle= (TextView)findViewById(R.id.PlaceTitle);
         starCount=(TextView)findViewById(R.id.StarsCount);
         UserLike=(ImageButton)findViewById(R.id.starButton);
         viewTitle.setText(title);
         String StarsString=""+stars;
         starCount.setText(StarsString);
+
         UserLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ImageButton button = (ImageButton)v;
-                button.setImageTintList(getColorStateList(R.color.button_red2));
                 stars=stars+1;
                 String StarsString=""+stars;
                 starCount.setText(StarsString);
