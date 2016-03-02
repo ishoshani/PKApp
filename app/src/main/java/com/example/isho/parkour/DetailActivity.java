@@ -62,7 +62,7 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.detailmap);
         mapFragment.getMapAsync(this);
-*//*
+
         viewTitle= (TextView)findViewById(R.id.PlaceTitle);
         starCount=(TextView)findViewById(R.id.StarsCount);
         UserLike=(ImageButton)findViewById(R.id.starButton);
