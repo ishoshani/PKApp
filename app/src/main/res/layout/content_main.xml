@@ -57,6 +57,9 @@
             android:layout_above="@+id/Button1"
             android:textColor="@color/redbg_text"
             android:hint="Username"
+            android:singleLine="true"
+            android:maxLength="15"
+            android:imeOptions="actionDone"
             android:textColorHint="@color/redbg_text"
             />
         <Button
@@ -66,9 +69,14 @@
             android:text="start"
             android:layout_centerInParent="true"
             android:layout_alignParentBottom="true"
-            android:background="@color/button_red"
+            android:background="@color/background_red"
             android:textColor="@color/redbg_text" />
     </RelativeLayout>
-
-
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/LoginsnackbarPosition"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true">
+    </android.support.design.widget.CoordinatorLayout>
 </RelativeLayout>

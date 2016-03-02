@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detailScroller"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_below="@+id/HeaderBar"
+    tools:shownIn="content_detail">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/userLabel"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Who's Here"
+            android:textColor="@color/redbg_text"
+            android:textSize="14sp"/>
+        <Button
+            android:id="@+id/UserButton"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"
+            android:text="@string/Tag"
+            android:background="@color/redbg_text"
+            android:layout_alignBaseline="@+id/userLabel"/>
+        <HorizontalScrollView
+            android:id="@+id/userBox"
+            android:layout_below="@+id/userLabel"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <RelativeLayout
+                android:id="@+id/userswheel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+        </HorizontalScrollView>
+        <TextView
+            android:id="@+id/featureLabel"
+            android:layout_below="@+id/userBox"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="What's Here"
+            android:textColor="@color/redbg_text"
+            android:textSize="14sp"/>
+        <Button
+            android:id="@+id/featureButton"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"
+            android:text="add Feature"
+            android:background="@color/redbg_text"
+            android:layout_alignBaseline="@+id/featureLabel"/>
+        <HorizontalScrollView
+            android:id="@+id/featureBox"
+            android:layout_below="@+id/featureLabel"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <RelativeLayout
+                android:id="@+id/featurewheel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+            </RelativeLayout>
+
+        </HorizontalScrollView>
+        <TextView
+            android:id="@+id/commentLabel"
+            android:layout_below="@+id/featureBox"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:text="Comments"
+            android:textColor="@color/redbg_text"
+            android:textSize="14sp"/>
+        <Button
+            android:id="@+id/commentButton"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"
+            android:text="add Comment"
+            android:background="@color/redbg_text"
+            android:layout_alignBaseline="@+id/commentLabel"/>
+
+    </RelativeLayout>
+
+
+
+</ScrollView>

@@ -59,6 +59,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     public Marker Tagged;
     public LatLng ToAdd;
     private GoogleApiClient client;
+    private DatabaseHelper db;
 
 
 
@@ -66,6 +67,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+        db=new DatabaseHelper(this);
         setContentView(R.layout.activity_main_map);
         pKspots= new ArrayList<PKspot>();
         PKspot testSpot1=new PKspot("Keller Park",45.512918, -122.679250);
@@ -102,7 +104,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         AddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("myTags","Add Button has been pressed, current spot is at"+ToAdd.toString());
+                //Log.i("myTags","Add Button has been pressed, current spot is at"+ToAdd.toString());
                 if(ToAdd==null){
                     Snackbar.make(CoordinatorLayoutView, "You need to select a place on the map first", Snackbar.LENGTH_LONG)
                             .show();
@@ -113,6 +115,8 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                 }
             }
         });
+        String username=db.getUserName(0);
+        Snackbar.make(CoordinatorLayoutView, "Welcome " + username, Snackbar.LENGTH_LONG).show();
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -213,13 +217,14 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                 // TODO: Make sure this auto-generated app deep link URI is correct.
                 Uri.parse("android-app://com.example.isho.parkour/http/host/path")
         );
+        String username=db.getUserName(0);
+        Snackbar.make(CoordinatorLayoutView,"Welcome "+username,Snackbar.LENGTH_LONG).show();
         AppIndex.AppIndexApi.start(client, viewAction);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(

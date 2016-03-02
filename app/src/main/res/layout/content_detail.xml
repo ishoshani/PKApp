@@ -8,7 +8,8 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:shownIn="activity_detail.xml">
 
     <RelativeLayout
         android:id="@+id/HeaderBar"
@@ -46,22 +47,10 @@
             android:layout_toEndOf="@+id/StarsCount"
             android:backgroundTint="@color/background_red"
             android:src="@android:drawable/star_off" />
-
-
     </RelativeLayout>
-
-    <android.support.design.widget.TabLayout
-        android:id="@+id/sliding_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:tabMode="scrollable" />
-
-    <android.support.v4.view.ViewPager
-    android:id="@+id/viewpager"
-    android:layout_width="match_parent"
-    android:layout_height="0px"
-    android:layout_weight="1"
-    android:background="@android:color/white" />
+    <include
+        layout="@layout/detailscroller"
+       />
 
 </RelativeLayout>
 
