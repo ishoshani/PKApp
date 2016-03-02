@@ -1,10 +1,12 @@
 package com.example.isho.parkour;
 
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.widget.TextView;
 import android.view.View;
 import android.widget.ImageButton;
@@ -48,24 +50,27 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
         setContentView(R.layout.activity_detail);
 
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        viewPager.setAdapter(new PagerAdapter(getSupportFragmentManager(), DetailActivity.this));
+
+
+        PagerAdapter pageradapter = new PagerAdapter(getSupportFragmentManager(),DetailActivity.this);
+
+        viewPager.setAdapter(pageradapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+       // tabLayout.setupWithViewPager(viewPager);
 
+        tabLayout.setTabsFromPagerAdapter(new PagerAdapter(getSupportFragmentManager(), DetailActivity.this));
+
+
+        TabLayout.Tab comments_tab = tabLayout.getTabAt(2);
+
+        comments_tab.setCustomView(pageradapter.getTabView(2));
 
         title=getIntent().getStringExtra("title");
+        Log.i("Checking title", "" +title);
         stars=getIntent().getIntExtra("stars", 0);
         place=new LatLng(getIntent().getDoubleExtra("lat",0.0),getIntent().getDoubleExtra("long",0.0));
 
-
-       /*
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.detailmap);
-        mapFragment.getMapAsync(this);
-
-        Details=(DetailFragment1)getSupportFragmentManager().findFragmentById(R.id.detail);
-        Details.setSpot(title);
         viewTitle= (TextView)findViewById(R.id.PlaceTitle);
         starCount=(TextView)findViewById(R.id.StarsCount);
         UserLike=(ImageButton)findViewById(R.id.starButton);
@@ -83,8 +88,19 @@ public class DetailActivity extends AppCompatActivity implements OnMapReadyCallb
                 button.setClickable(false);
             }
         });
+
+        /*
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.detailmap);
+        mapFragment.getMapAsync(this);
+
+        Details=(DetailFragment1)getSupportFragmentManager().findFragmentById(R.id.detail);
+        Details.setSpot(title);
+
 */
     }
+
+
 
 
     @Override

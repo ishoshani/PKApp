@@ -12,8 +12,10 @@ import android.location.LocationManager;
 import android.net.Uri;
 import android.nfc.Tag;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.Manifest.permission;
@@ -40,6 +42,9 @@ import java.util.jar.Manifest;
 
 public class MainMap extends FragmentActivity implements OnMapReadyCallback {
 
+
+
+
     private GoogleMap mMap;
     View CoordinatorLayoutView;
 
@@ -54,6 +59,8 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     public Marker Tagged;
     public LatLng ToAdd;
     private GoogleApiClient client;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,8 +137,9 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-             Log.i("myLogs","Got Permissions! Attempting to enable my location");
-            mMap.setMyLocationEnabled(true);
+
+        Log.i("myLogs","Got Permissions! Attempting to enable my location");
+        mMap.setMyLocationEnabled(true);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -145,6 +153,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                         break;
                     }
                 }
+                chosen.stars=2;
                 Intent goToDetails = new Intent(getApplicationContext(), DetailActivity.class);
                 Log.i("myLogs", "created Intent");
                 Log.i("myLogs", "Spot is " + chosen.getName());
