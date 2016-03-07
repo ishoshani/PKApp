@@ -100,7 +100,6 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 ImageButton button = (ImageButton) v;
-                button.setImageTintList(getColorStateList(R.color.button_red2));
                 stars = stars + 1;
                 String StarsString = "" + stars;
                 starCount.setText(StarsString);
