@@ -10,6 +10,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by isho on 2/15/16.
  */
@@ -40,6 +42,16 @@ public class PKspot {
     public int addstar(){
         stars++;
         return stars;
+    }
+    public static PKspot getSpot(List<PKspot> available,LatLng toFind){
+     PKspot selected=null;
+        for (PKspot i: available) {
+            if(i.getCoords().latitude==toFind.latitude&&i.getCoords().longitude==toFind.longitude){
+                selected=i;
+                break;
+            }
+        }
+        return selected;
     }
     public void addUser(User U){
         users.add(U);

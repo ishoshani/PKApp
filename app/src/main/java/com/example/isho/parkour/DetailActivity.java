@@ -1,16 +1,26 @@
 package com.example.isho.parkour;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.text.InputType;
 import android.util.Log;
+import android.webkit.WebSettings;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -28,6 +38,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.support.design.widget.TabLayout;
@@ -56,7 +67,9 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
     Button FeatureButton;
     Button CommentButton;
     RelativeLayout tagWheel;
+    Context context;
     RelativeLayout featureWheel;
+    RelativeLayout commentWheel;
     DatabaseHelper db;
     Button FinishButton;
     /**
@@ -70,6 +83,7 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        context=this;
         db=new DatabaseHelper(this);
         title = getIntent().getStringExtra("title");
         Log.i("Checking title", "" + title);
@@ -85,16 +99,62 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
         CommentButton = (Button) findViewById(R.id.commentButton);
         tagWheel = (RelativeLayout) findViewById(R.id.userswheel);
         featureWheel = (RelativeLayout) findViewById(R.id.featurewheel);
+        commentWheel = (RelativeLayout) findViewById(R.id.commentwheel);
         TagButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                Bitmap img=db.getProfilePic("profile0.png",DetailActivity.this);
+                Bitmap img=db.getProfilePic("Profile0.png",DetailActivity.this);
                 ImageView tagger=new ImageView(DetailActivity.this);
                 tagger.setImageBitmap(img);
                 RelativeLayout.LayoutParams ll=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
                 tagger.setLayoutParams(ll);
-                featureWheel.addView(tagger);
+                tagWheel.addView(tagger);
             }
         });
+        CommentButton.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        builder.setTitle("Add a comment!");
+                        final EditText input= new EditText(context);
+                        input.setHint("Comment Here");
+                        input.setInputType(InputType.TYPE_CLASS_TEXT);
+                        input.setTextColor(ContextCompat.getColor(context, R.color.notifyColor));
+                        builder.setView(input);
+                        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                TextView comment= new TextView(context);
+                                String username=db.getUserName(0);
+                                String response=input.getText().toString();
+                                String commentFormat = getResources().getString(R.string.comment_form);
+                                String comment1=String.format(commentFormat,username,response);
+                                Log.i("myLogs", comment1);
+                                comment.setText(comment1);
+                                //comment.setTextSize(R.dimen.textsize,1);
+                                comment.setTextColor(ContextCompat.getColor(context, R.color.notifyColor));
+                                comment.setBackgroundColor(ContextCompat.getColor(context,R.color.redbg_text));
+                                RelativeLayout.LayoutParams ll=new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+                                comment.setLayoutParams(ll);
+                                commentWheel.addView(comment);
+
+
+
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+
+                        builder.show();
+
+
+                    }
+                }
+        );
         viewTitle.setText(title);
         String StarsString = "" + stars;
         starCount.setText(StarsString);
@@ -102,9 +162,12 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
             @Override
             public void onClick(View v) {
                 ImageButton button = (ImageButton) v;
+
                 stars = stars + 1;
                 String StarsString = "" + stars;
                 starCount.setText(StarsString);
+                Drawable star= getResources().getDrawable(android.R.drawable.star_on);
+                button.setImageDrawable(star);
                 button.setClickable(false);
             }
         });

@@ -1,6 +1,7 @@
 package com.example.isho.parkour;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -9,12 +10,15 @@ import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.nio.ByteBuffer;
 import java.sql.SQLClientInfoException;
+import java.util.ArrayList;
 
 /**
  * Created by isho on 3/1/16.
@@ -46,6 +50,15 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Log.i("myLogs",insertUser);
         getWritableDatabase().execSQL(insertUser);
     }
+    public void addSpot(String name, LatLng position, int stars){
+        Cursor idhelper=getReadableDatabase().rawQuery("Select Count(*) From Spots", null);
+        idhelper.moveToNext();
+        int maxid=idhelper.getInt(0);
+
+        String insertSpot="INSERT into SPOTS Values("+maxid+", '"+name+"', "+stars+", "+position.latitude+", "+position.longitude+");";
+        Log.i("myLogs",insertSpot);
+        getWritableDatabase().execSQL(insertSpot);
+    }
     public boolean checkUser(){
         Cursor q=getReadableDatabase().rawQuery("Select Count(*) From User", null);
         q.moveToNext();
@@ -60,14 +73,16 @@ class DatabaseHelper extends SQLiteOpenHelper {
         Cursor q=getReadableDatabase().rawQuery("Select Name From User Where id=" + id + ";", null);
         q.moveToNext();
         Log.i("myLogs","got cursor"+q.toString());
-        Log.i("myLogs","got info "+q.getString(0));
+        Log.i("myLogs", "got info " + q.getString(0));
         Log.i("myLogs", "at positoin " + q.getPosition());
         String name = q.getString(0);
         return name;
     }
-    public Bitmap getProfilePic(String Filename, Context context){
+    public Bitmap getProfilePic(String Filename, Context context) {
         Bitmap image;
-        image= BitmapFactory.decodeFile(Filename);
+        ContextWrapper c = new ContextWrapper(context);
+        String fileURI = c.getFilesDir().getAbsolutePath();
+        image = BitmapFactory.decodeFile(fileURI + "/" + Filename);
         return image;
 
     }

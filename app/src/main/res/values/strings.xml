@@ -9,6 +9,7 @@
     <string name="comments">Comments</string>
     <string name="search">Search</string>
     <string name="title_activity_splash">SplashActivity</string>
+    <string name="comment_form">%1$s Said : \n %2$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

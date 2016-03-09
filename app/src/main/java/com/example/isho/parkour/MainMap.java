@@ -102,8 +102,10 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                    Snackbar.make(CoordinatorLayoutView, "You need to select a spot first", Snackbar.LENGTH_LONG)
                    .show();
                }else{
-                       Snackbar.make(CoordinatorLayoutView,"Thank you for Sharing!",Snackbar.LENGTH_LONG)
-                       .show();
+                   PKspot Selected=PKspot.getSpot(pKspots,Tagged.getPosition());
+                  // Selected.addUser(new User(db.getUserName(0),db.getProfilePic("Profile0",getParent())));
+                   Snackbar.make(CoordinatorLayoutView,"Thank you for Sharing!",Snackbar.LENGTH_LONG)
+                           .show();
                    }
 
             }
@@ -181,7 +183,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        Log.i("myLogs","Got Permissions! Attempting to enable my location");
+        Log.i("myLogs", "Got Permissions! Attempting to enable my location");
         mMap.setMyLocationEnabled(true);
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -233,6 +235,8 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                 newMarker.push(m);
             }
         });
+        LatLng center = new LatLng(45.512918, -122.679250);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(center,15));
         mapRefresh();
 
 

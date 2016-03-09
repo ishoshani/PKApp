@@ -86,6 +86,12 @@
             android:text="add Comment"
             android:background="@color/redbg_text"
             android:layout_alignBaseline="@+id/commentLabel"/>
+        <RelativeLayout
+            android:layout_below="@id/commentLabel"
+            android:id="@+id/commentwheel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        </RelativeLayout>
 
     </RelativeLayout>
 
