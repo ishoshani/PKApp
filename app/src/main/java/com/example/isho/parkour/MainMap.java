@@ -3,6 +3,7 @@ package com.example.isho.parkour;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
@@ -16,12 +17,14 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.Manifest.permission;
 import android.widget.Button;
 import android.location.Location;
 import android.graphics.Bitmap;
+import android.widget.EditText;
 import android.widget.SearchView;
 
 import com.google.android.gms.appindexing.Action;
@@ -38,6 +41,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.jar.Manifest;
 
 public class MainMap extends FragmentActivity implements OnMapReadyCallback {
@@ -57,8 +61,10 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
     public Button TagButton;
     public Button AddButton;
     public Marker Tagged;
-    public LatLng ToAdd;
+    public LinkedList <Marker>newMarker;
     private GoogleApiClient client;
+    private Context context;
+    private String m_Text;
     private DatabaseHelper db;
 
 
@@ -68,7 +74,9 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
 
         super.onCreate(savedInstanceState);
         db=new DatabaseHelper(this);
+        context=this;
         setContentView(R.layout.activity_main_map);
+        newMarker=new LinkedList<Marker>();
         pKspots= new ArrayList<PKspot>();
         PKspot testSpot1=new PKspot("Keller Park",45.512918, -122.679250);
         pKspots.add(testSpot1);
@@ -105,13 +113,44 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 //Log.i("myTags","Add Button has been pressed, current spot is at"+ToAdd.toString());
-                if(ToAdd==null){
+                if(newMarker.isEmpty()){
                     Snackbar.make(CoordinatorLayoutView, "You need to select a place on the map first", Snackbar.LENGTH_LONG)
                             .show();
                 }
                 else{
-                    Snackbar.make(CoordinatorLayoutView, "Thank you for adding this spot!", Snackbar.LENGTH_LONG)
-                            .show();
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Create A new Spot!");
+                    final EditText input= new EditText(getApplicationContext());
+                    input.setHint("Name your Spot!");
+                    input.setInputType(InputType.TYPE_CLASS_TEXT);
+                    input.setTextColor(ContextCompat.getColor(context, R.color.notifyColor));
+                    builder.setView(input);
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Marker m=newMarker.pop();
+                            LatLng newCoords=m.getPosition();
+                            m_Text = input.getText().toString();
+                            String name = m_Text;
+                            PKspot newSpot = new PKspot(name, newCoords.latitude, newCoords.longitude);
+                            pKspots.add(newSpot);
+                            mapRefresh();
+                            Snackbar.make(CoordinatorLayoutView, "Thank you for adding this spot!", Snackbar.LENGTH_LONG)
+                                    .show();
+                            dialog.dismiss();
+
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+                    builder.show();
+
                 }
             }
         });
@@ -157,7 +196,7 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
                         break;
                     }
                 }
-                chosen.stars=2;
+                chosen.stars = 2;
                 Intent goToDetails = new Intent(getApplicationContext(), DetailActivity.class);
                 Log.i("myLogs", "created Intent");
                 Log.i("myLogs", "Spot is " + chosen.getName());
@@ -180,25 +219,36 @@ public class MainMap extends FragmentActivity implements OnMapReadyCallback {
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                Log.i("myLogs","registered a map click at "+latLng.toString());
-                mMap.addMarker(new MarkerOptions()
+                Log.i("myLogs", "registered a map click at " + latLng.toString());
+                if (!newMarker.isEmpty()) {
+                    Marker remove = (Marker) newMarker.pop();
+                    remove.remove();
+                }
+                Marker m = mMap.addMarker(new MarkerOptions()
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_flag_black_18dp))
                         .position(latLng)
+                        .anchor((float) 0.3, 1)
                         .title("newSpot"));
-                ToAdd=latLng;
+
+                newMarker.push(m);
             }
         });
+        mapRefresh();
 
-        for(PKspot pk : pKspots) {
+
+        }
+    public void mapRefresh() {
+        mMap.clear();
+        for (PKspot pk : pKspots) {
             LatLng currentSpot = pk.getCoords();
             String name = pk.getName();
             mMap.addMarker(new MarkerOptions()
                     .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_beenhere_black_18dp))
                     .position(currentSpot)
                     .title(name));
+
         }
-
     }
-
 
     @Override
     public void onStart() {

@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         iv.setImageBitmap(bp);
         image= bp;
         if(name_input){
-            b1.setBackgroundColor(getColor(R.color.button_red));
+            b1.setBackgroundColor(ContextCompat.getColor(this, R.color.button_red));
         }
         image_taken=true;
         try {
