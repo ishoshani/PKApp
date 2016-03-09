@@ -1,6 +1,7 @@
 package com.example.isho.parkour;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -57,6 +58,7 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
     RelativeLayout tagWheel;
     RelativeLayout featureWheel;
     DatabaseHelper db;
+    Button FinishButton;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -107,10 +109,17 @@ public class DetailActivity extends FragmentActivity implements OnMapReadyCallba
             }
         });
 
-/*
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.detailmap);
-        mapFragment.getMapAsync(this);*/
+
+        FinishButton = (Button) findViewById(R.id.btn_finish);
+        FinishButton.setOnClickListener(new View.OnClickListener() {
+                                            public void onClick(View v) {
+                                                Intent end = new Intent(DetailActivity.this,FinishActivity.class);
+                                                startActivity(end);
+                                            }
+                                        }
+
+        );
+
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.

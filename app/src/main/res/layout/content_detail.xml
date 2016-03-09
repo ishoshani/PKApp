@@ -34,10 +34,7 @@
             android:layout_toEndOf="@+id/PlaceTitle"
             android:text="0"
             android:textColor="@color/redbg_text"
-            android:textSize="30dp"
-
-            />
-
+            android:textSize="30dp" />
 
         <ImageButton
             android:id="@+id/starButton"
@@ -51,6 +48,14 @@
     <include
         layout="@layout/detailscroller"
        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text= "Finish"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btn_finish" />
 
 </RelativeLayout>
 
